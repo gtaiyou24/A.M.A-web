@@ -76,7 +76,14 @@ const fetchOutfitList = (start: number = 0, size: number = 50, gender: string|nu
       }
     })
     .then(function (response) {
-      response.data.items.forEach((item: Outfit) => outfits.push(item));
+      response.data.items.forEach((item: any) => outfits.push({
+        id: item.id,
+        images: item.images,
+        gender: item.gender,
+        description: item.description,
+        postedAt: item.postedAt,
+        url: item.url,
+      }));
     })
     .catch(function (error) {
       console.log(error);
