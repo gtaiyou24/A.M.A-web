@@ -33,7 +33,7 @@
       </v-row>
 
       <v-row class="d-flex">
-        <v-col v-for="outfit in outfits" v-bind:key="outfit" cols="4" md="3" lg="2">
+        <v-col v-for="outfit in outfits" v-bind:key="outfit.id" cols="4" md="3" lg="2">
           <v-img @click="openNewTab(outfit.url)" :src="outfit.images[0]"></v-img>
         </v-col>
       </v-row>
@@ -46,7 +46,7 @@ import {onMounted, reactive, ref, watch} from "vue";
 import axios from "axios";
 interface Outfit {
   id: string,
-  images: string[],
+  images: Array<string>,
   gender: string,
   description?: string|undefined,
   postedAt: string,
@@ -57,7 +57,7 @@ const loading = ref<boolean>(false);
 const genders = ref<string[]>(['ALL', 'WOMEN', 'MEN']);
 const text = ref<string|null>(null);
 const gender = ref<string|null>(null);
-const outfits = reactive<Outfit[]>([]);
+const outfits = reactive<Array<Outfit>>([]);
 const search = () => {
   alert('on click');
 };
@@ -76,14 +76,17 @@ const fetchOutfitList = (start: number = 0, size: number = 50, gender: string|nu
       }
     })
     .then(function (response) {
-      response.data.items.forEach((item: any) => outfits.push({
-        id: item.id,
-        images: item.images,
-        gender: item.gender,
-        description: item.description,
-        postedAt: item.postedAt,
-        url: item.url,
-      }));
+      response.data.items.forEach(function(item: any) {
+        let outfit: Outfit = {
+          id: item.id,
+          images: item.images,
+          gender: item.gender,
+          description: item.description,
+          postedAt: item.postedAt,
+          url: item.url,
+        };
+        outfits.push(outfit)
+      });
     })
     .catch(function (error) {
       console.log(error);
