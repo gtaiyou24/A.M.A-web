@@ -48,7 +48,7 @@ interface Outfit {
   id: string,
   images: string[],
   gender: string,
-  description?: string,
+  description?: string|undefined,
   postedAt: string,
   url: string,
 }
