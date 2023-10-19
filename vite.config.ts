@@ -9,23 +9,6 @@ import { fileURLToPath, URL } from 'node:url'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
-  let server = {}
-  if (mode == 'development') {
-    server = {
-      proxy: {
-        '/api': {
-          target: 'http://localhost:8000',
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, ''),
-        },
-      },
-      port: 3000
-    }
-  } else {
-    server = {
-      port: 3000
-    }
-  }
   return {
     plugins: [
       vue({
@@ -62,6 +45,8 @@ export default defineConfig(({ command, mode }) => {
         '.vue',
       ],
     },
-    server: server,
+    server: {
+      port: 3000
+    },
   }
 })
